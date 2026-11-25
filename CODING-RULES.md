@@ -22,6 +22,7 @@ Rules are numbered permanently. A rule's number never changes, so you can refer 
   13. [Don't Modify Unrelated Code](#13-dont-modify-unrelated-code)
   14. [Inspect Before Making Changes](#14-inspect-before-making-changes)
   15. [Explain Important Changes](#15-explain-important-changes)
+  16. [Suggest a Meaningful Commit Message](#16-suggest-a-meaningful-commit-message)
 - [General Instructions](#general-instructions)
 - [Copy-Ready Version](#copy-ready-version)
 - [Adding a New Rule](#adding-a-new-rule)
@@ -86,9 +87,22 @@ Handle loading states, empty states, errors, and success messages. Always provid
 
 ### 10. Follow Security Best Practices
 
-Protect sensitive information, validate user input, secure API endpoints, and check user permissions.
+Protect sensitive information, validate user input, secure API endpoints, and check user permissions. Before finishing any feature, check it against this list:
 
-**Why it matters:** Generated code can work correctly and still be insecure, for example by hard-coding secrets, trusting user input, or skipping authorization checks. Security needs to be an explicit requirement.
+- Keep API keys and secrets out of the code and the frontend. Store them in environment variables, and make sure `.env` files are listed in `.gitignore`.
+- Require proper authentication, and protect admin routes on the server, not only in the UI.
+- Check permissions on every request, so users can only access and change their own data.
+- Validate and sanitize all form input on the server.
+- Prevent cross-site scripting (XSS) by escaping user content before displaying it. Never insert raw user input as HTML.
+- Add rate limiting to login, signup, and public API endpoints.
+- Set security headers, such as `Content-Security-Policy`, `Strict-Transport-Security`, and `X-Content-Type-Options`.
+- Turn off debug mode and detailed error messages in production.
+- Keep dependencies up to date, and check them for known vulnerabilities (for example, with `npm audit`).
+- Make sure no sensitive files are publicly accessible, such as `.env` files, the `.git` folder, backups, or logs.
+- Secure the database: use parameterized queries, give the application only the access it needs, and never expose the database directly to the internet.
+- Hash passwords with a strong algorithm such as bcrypt or Argon2. Never store passwords in plain text.
+
+**Why it matters:** Generated code can work correctly and still be insecure. AI assistants rarely add these protections unless asked, and a single missed item can expose user data or the whole application.
 
 ### 11. Follow Performance Best Practices
 
@@ -120,6 +134,17 @@ After implementation, summarize which files were changed, what was added or modi
 
 **Why it matters:** A clear summary lets you review the work quickly, spot unexpected edits, and keep track of how the project changes over time.
 
+### 16. Suggest a Meaningful Commit Message
+
+After completing a task, suggest a clear commit message that describes what changed and why. Start with a short summary line (about 50 characters) that begins with a verb, such as "Add", "Fix", or "Update". Add a short body when the reason for the change is not obvious. Avoid vague messages like "update" or "fix stuff".
+
+**Why it matters:** The commit history is how developers find when and why something changed. Clear messages make it easy to track down bugs, review past work, and undo changes safely.
+
+```text
+Bad:  fixed stuff
+Good: Fix login error when email contains uppercase letters
+```
+
 ---
 
 ## General Instructions
@@ -148,12 +173,26 @@ Follow these coding rules:
 7. Follow the Existing Project Structure: Respect the current folder structure, file organization, and coding style. Don't introduce a new structure without a good reason.
 8. Don't Recreate Existing Components: Before creating a new component or feature, check whether something similar already exists. Reuse or improve existing components when possible.
 9. Handle Errors and Application States Properly: Handle loading states, empty states, errors, and success messages. Always provide useful feedback to users.
-10. Follow Security Best Practices: Protect sensitive information, validate user input, secure API endpoints, and check user permissions.
+10. Follow Security Best Practices: Protect sensitive information, validate user input, secure API endpoints, and check user permissions. Before finishing any feature, check that:
+   - API keys and secrets are stored in environment variables, never in the code or frontend, and .env files are in .gitignore.
+   - Authentication is required, and admin routes are protected on the server.
+   - Every request checks permissions, so users can only access their own data.
+   - All form input is validated and sanitized on the server.
+   - User content is escaped to prevent XSS. Raw user input is never inserted as HTML.
+   - Login, signup, and public API endpoints have rate limiting.
+   - Security headers are set (Content-Security-Policy, Strict-Transport-Security, X-Content-Type-Options).
+   - Debug mode and detailed error messages are turned off in production.
+   - Dependencies are up to date and checked for known vulnerabilities.
+   - No sensitive files are publicly accessible (.env, .git, backups, logs).
+   - The database uses parameterized queries, minimal access rights, and is not exposed to the internet.
+   - Passwords are hashed with bcrypt or Argon2, never stored in plain text.
 11. Follow Performance Best Practices: Avoid unnecessary API requests, optimize database queries, and prevent unnecessary rendering or processing.
 12. Make All UI Designs Responsive: Ensure the application works properly on mobile, tablet, and desktop screens.
 13. Don't Modify Unrelated Code: Only change files and functionality related to the requested task. Don't break or modify existing features unnecessarily.
 14. Inspect Before Making Changes: Before implementing anything, examine the existing code and understand how the relevant parts of the application work.
 15. Explain Important Changes: After implementation, summarize which files were changed, what was added or modified, and why.
+
+16. Suggest a Meaningful Commit Message: After completing a task, suggest a clear commit message that describes what changed and why. Start with a short summary line (about 50 characters) that begins with a verb, such as "Add", "Fix", or "Update". Add a short body when the reason for the change is not obvious. Avoid vague messages like "update" or "fix stuff".
 
 General instructions:
 - Don't install unnecessary packages. Use existing libraries whenever possible.

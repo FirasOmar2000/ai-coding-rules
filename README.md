@@ -38,14 +38,14 @@ Better instructions lead to better code, and better code leads to a better final
 1. **Copy the rules.** Open [CODING-RULES.md](CODING-RULES.md) and copy the [Copy-Ready Version](CODING-RULES.md#copy-ready-version), or pick only the rules you need.
 2. **Add them where your assistant reads instructions.**
 
-   | Tool | Where to add the rules |
-   | --- | --- |
-   | Claude Code | `CLAUDE.md` in your project root |
-   | Cursor | A project rule in `.cursor/rules/` |
-   | GitHub Copilot | `.github/copilot-instructions.md` |
-   | Codex and other agents | `AGENTS.md` in your project root |
+   | Tool                   | Where to add the rules                                                       |
+   | ---------------------- | ---------------------------------------------------------------------------- |
+   | Claude Code            | `CLAUDE.md` in your project root                                             |
+   | Cursor                 | A project rule in `.cursor/rules/`                                           |
+   | GitHub Copilot         | `.github/copilot-instructions.md`                                            |
+   | Codex and other agents | `AGENTS.md` in your project root                                             |
    | Claude, ChatGPT (chat) | Project instructions, custom instructions, or the start of your conversation |
-   | Other tools | The tool's system prompt or custom instructions setting |
+   | Other tools            | The tool's system prompt or custom instructions setting                      |
 
 3. **Refer to rules by number.** Because rule numbers never change, you can remind your assistant during a task, for example: "Follow rule 13 and don't modify unrelated code."
 
@@ -99,6 +99,9 @@ A summary of all rules is below. See [CODING-RULES.md](CODING-RULES.md) for the 
 
 15. **Explain Important Changes**
     After implementation, summarize which files were changed, what was added or modified, and why.
+
+16. **Suggest a Meaningful Commit Message**
+    After completing a task, suggest a clear commit message that describes what changed and why.
 
 ## General Instructions
 
