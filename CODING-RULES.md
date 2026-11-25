@@ -191,7 +191,6 @@ Follow these coding rules:
 13. Don't Modify Unrelated Code: Only change files and functionality related to the requested task. Don't break or modify existing features unnecessarily.
 14. Inspect Before Making Changes: Before implementing anything, examine the existing code and understand how the relevant parts of the application work.
 15. Explain Important Changes: After implementation, summarize which files were changed, what was added or modified, and why.
-
 16. Suggest a Meaningful Commit Message: After completing a task, suggest a clear commit message that describes what changed and why. Start with a short summary line (about 50 characters) that begins with a verb, such as "Add", "Fix", or "Update". Add a short body when the reason for the change is not obvious. Avoid vague messages like "update" or "fix stuff".
 
 General instructions:
@@ -209,7 +208,7 @@ Follow these steps so the collection stays consistent as it grows.
 1. **Check for overlap.** Read the existing rules first. If the idea is already covered, improve that rule instead of adding a new one.
 2. **Use the next available number.** Never renumber, reorder, or reuse the number of an existing rule.
 3. **Write a short, meaningful title** in title case that starts with a verb or a clear action (for example, "Keep Functions Small").
-4. **Write the instruction** as one or two direct sentences addressed to the AI assistant.
+4. **Write the instruction** as a few short, direct sentences addressed to the AI assistant. Use a short checklist when the rule has several specific checks.
 5. **Explain why it matters** in one or two sentences.
 6. **Update every place the rule appears:**
    - The [Contents](#contents) list in this file
@@ -220,7 +219,7 @@ Follow these steps so the collection stays consistent as it grows.
 ### Rule template
 
 ```markdown
-### 16. Rule Title
+### N. Rule Title
 
 One or two sentences written as a direct instruction to the AI assistant.
 
