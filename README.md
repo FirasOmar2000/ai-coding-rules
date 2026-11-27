@@ -103,6 +103,12 @@ A summary of all rules is below. See [CODING-RULES.md](CODING-RULES.md) for the 
 16. **Suggest a Meaningful Commit Message**
     After completing a task, suggest a clear commit message that describes what changed and why.
 
+17. **Plan Before Building**
+    Before starting a new project or a major feature, make sure the planning documents exist: requirements, app flow, design brief, database schema, and implementation plan. Draft any that are missing and get approval before writing code.
+
+18. **Prevent Race Conditions**
+    When two requests can change the same data at the same time, never check a value and update it in separate steps. Let the database do both in one atomic step, or use a transaction that locks the row.
+
 ## General Instructions
 
 These apply to every task, alongside the numbered rules.

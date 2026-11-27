@@ -23,6 +23,8 @@ Rules are numbered permanently. A rule's number never changes, so you can refer 
   14. [Inspect Before Making Changes](#14-inspect-before-making-changes)
   15. [Explain Important Changes](#15-explain-important-changes)
   16. [Suggest a Meaningful Commit Message](#16-suggest-a-meaningful-commit-message)
+  17. [Plan Before Building](#17-plan-before-building)
+  18. [Prevent Race Conditions](#18-prevent-race-conditions)
 - [General Instructions](#general-instructions)
 - [Copy-Ready Version](#copy-ready-version)
 - [Adding a New Rule](#adding-a-new-rule)
@@ -145,6 +147,44 @@ Bad:  fixed stuff
 Good: Fix login error when email contains uppercase letters
 ```
 
+### 17. Plan Before Building
+
+Before starting a new project or a major feature, make sure these planning documents exist. If any are missing, draft them and ask for approval before writing code:
+
+- **Product requirements:** what the application does, feature by feature.
+- **Technical requirements:** the languages, frameworks, libraries, and services it is built on.
+- **App flow:** what happens when a user takes an action, and which page or screen comes next.
+- **Design brief:** colors, fonts, and how each screen should look, so the design stays consistent.
+- **Database schema:** what data is stored, how it is structured, and who can access it.
+- **Implementation plan:** what gets built, and in what order.
+
+Follow these documents while building. If a request conflicts with them, point out the conflict and ask before continuing.
+
+**Why it matters:** Without a plan, AI assistants guess: they choose tools, invent screens, and change direction halfway through. Written documents keep every session working toward the same product and make the result predictable.
+
+### 18. Prevent Race Conditions
+
+When two requests can change the same data at the same time, such as stock, seats, balances, or counters, never check a value in one step and update it in another. Make the database check and update in a single atomic step, for example with a conditional update, and confirm that a row was actually changed. When several changes must happen together, use a transaction and lock the rows being changed. Review existing code for this "check, then write" pattern and fix it.
+
+**Why it matters:** Code with this problem works perfectly when you test it alone, then fails in production when two users act at the same moment. The result is overselling, double charges, or negative balances, and the bug is hard to reproduce.
+
+```js
+// Bad: check, then write in two separate steps
+const { rows } = await db.query("SELECT remaining FROM tickets WHERE id = $1", [id]);
+if (rows[0].remaining > 0) {
+  await db.query("UPDATE tickets SET remaining = remaining - 1 WHERE id = $1", [id]);
+}
+
+// Good: check and write in one atomic step
+const result = await db.query(
+  "UPDATE tickets SET remaining = remaining - 1 WHERE id = $1 AND remaining > 0",
+  [id]
+);
+if (result.rowCount === 0) {
+  // Sold out: show a clear message to the user
+}
+```
+
 ---
 
 ## General Instructions
@@ -192,6 +232,15 @@ Follow these coding rules:
 14. Inspect Before Making Changes: Before implementing anything, examine the existing code and understand how the relevant parts of the application work.
 15. Explain Important Changes: After implementation, summarize which files were changed, what was added or modified, and why.
 16. Suggest a Meaningful Commit Message: After completing a task, suggest a clear commit message that describes what changed and why. Start with a short summary line (about 50 characters) that begins with a verb, such as "Add", "Fix", or "Update". Add a short body when the reason for the change is not obvious. Avoid vague messages like "update" or "fix stuff".
+17. Plan Before Building: Before starting a new project or a major feature, make sure these planning documents exist. If any are missing, draft them and ask for approval before writing code:
+   - Product requirements: what the application does, feature by feature.
+   - Technical requirements: the languages, frameworks, libraries, and services it is built on.
+   - App flow: what happens when a user takes an action, and which page or screen comes next.
+   - Design brief: colors, fonts, and how each screen should look, so the design stays consistent.
+   - Database schema: what data is stored, how it is structured, and who can access it.
+   - Implementation plan: what gets built, and in what order.
+   Follow these documents while building. If a request conflicts with them, point out the conflict and ask before continuing.
+18. Prevent Race Conditions: When two requests can change the same data at the same time, such as stock, seats, balances, or counters, never check a value in one step and update it in another. Make the database check and update in a single atomic step, for example with a conditional update, and confirm that a row was actually changed. When several changes must happen together, use a transaction and lock the rows being changed. Review existing code for this "check, then write" pattern and fix it.
 
 General instructions:
 - Don't install unnecessary packages. Use existing libraries whenever possible.
